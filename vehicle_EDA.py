@@ -36,7 +36,7 @@ df.head()
 
 #extracting the names of the manufacterer
 split = df['model'].str.split(pat=' ', n=1, expand=True)
-split
+
 
 
 # In[6]:
@@ -55,30 +55,16 @@ df.head()
 
 
 #creating header 
-st.header('Used Cars from, 1908-2019')
+st.header('Used Cars from 1908-2019')
 st.write("""
 ##### The data below shows the type of cars from each manufacterer from 1908-2019
 """)
-#inserting the dataframe
-st.dataframe(df)
 #let users decide whether they want to see the odometer or not using a checkbox
 exclude_odometer = st.checkbox('Exclude odometer reading')
-
-
-# In[8]:
-
-
-exclude_odometer
-
-
-# In[9]:
-
-
 if exclude_odometer:
-    df = df.drop('odometer', axis=1, inplace=True)
-
-
-# In[10]:
+    df = df.drop('odometer', axis=1)
+#inserting the dataframe
+st.dataframe(df)
 
 
 st.header('Number of Vehicle Types by Manufacterer')
@@ -88,15 +74,6 @@ fig1 = px.histogram(df, x='manufacterer', color='type')
 st.write(fig1)
 
 
-# In[11]:
-
-
-fig1.show()
-
-
-# In[12]:
-
-
 st.header('Price Range of Vehicles Per Model Year')
 #creating a scatterplot
 fig2 = px.scatter(df, x='model_year', y='price')
@@ -104,18 +81,10 @@ fig2 = px.scatter(df, x='model_year', y='price')
 st.write(fig2)
 
 
-# In[13]:
-
-
-fig2.show()
-
-
-# In[14]:
-
 
 st.header('Overall Transmission Type of Vehicles')
 st.write("""
-##### The data below that the majority of cars listed are automatic transmission.
+##### The data below shows that the majority of cars listed are automatic transmission.
 """)
 #making a histogram
 fig3 = px.histogram(df, x='transmission')
@@ -123,48 +92,29 @@ fig3 = px.histogram(df, x='transmission')
 st.write(fig3)
 
 
-# In[15]:
-
-
-fig3.show()
-
-
-# In[16]:
-
-
 #filtering the most popular types of vehicles in the US
 us_cars = df[(df['type'] == 'SUV') | (df['type'] == 'sedan') | (df['type'] == 'truck') | (df['type'] == 'mini-van')]
-us_cars
 
-
-# In[17]:
 
 
 st.header('Overall Types of Cars Listed')
+st.write("""
+##### It seems that trucks seem to be the most popular, followed by SUVs and sedans. 
+""")
 #creating a scatterplot
 fig4 = px.histogram(us_cars, x='type')
 #displaying the scatterplot
 st.write(fig4)
 
 
-# In[18]:
-
-
-fig4.show()
-
-
-# In[19]:
-
-
-st.header('Price of Cars')
+st.header('Price Range of Trucks, SUVs, Sedans, and Mini-Vans')
 #creating a scatterplot
 fig5 = px.scatter(us_cars, x='model_year', y='price')
 #displaying the scatterplot
 st.write(fig5)
 
 
-# In[20]:
 
 
-fig5.show()
+
 
