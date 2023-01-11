@@ -113,7 +113,7 @@ st.write("""
 #let users decide whether they want to see the odometer or not using a checkbox
 exclude_odometer = st.checkbox('Exclude odometer reading')
 if exclude_odometer:
-    df = df.drop('odometer', axis=1, inplace=True)
+    df = df.drop('odometer', axis=1)
 #inserting the dataframe
 st.dataframe(df)
 
