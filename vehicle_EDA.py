@@ -15,7 +15,7 @@ import plotly.express as px
 # In[2]:
 
 
-df = pd.read_csv(r'C:\Users\tomin\Documents\Practicum Projects\Sprint 4\Car-Dashboard\vehicles_us.csv')
+df = pd.read_csv(r'vehicles_us.csv')
 df.head()
 
 
@@ -143,7 +143,7 @@ st.write(fig2)
 
 st.header('Overall Transmission Type of Vehicles')
 st.write("""
-##### The data below that the majority of cars listed are automatic transmission.
+##### The data below shows that the majority of cars listed are automatic transmission.
 """)
 #making a histogram
 fig3 = px.histogram(df, x='transmission')
@@ -155,6 +155,9 @@ st.write(fig3)
 
 
 st.header('Overall Types of Cars Listed')
+st.write("""
+##### The most popular types of cars listed are trucks, SUVs, and sedans.
+""")
 #creating a scatterplot
 fig4 = px.histogram(df, x='type')
 #displaying the scatterplot
