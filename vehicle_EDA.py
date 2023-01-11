@@ -12,7 +12,7 @@ import plotly.express as px
 # In[2]:
 
 
-df = pd.read_csv(r'C:\Users\tomin\Documents\Practicum Projects\Sprint 4\Car-Dashboard\vehicles_us.csv')
+df = pd.read_csv(r'vehicles_us.csv')
 df.head()
 
 
