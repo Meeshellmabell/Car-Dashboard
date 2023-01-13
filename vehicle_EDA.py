@@ -15,7 +15,7 @@ import plotly.express as px
 # In[2]:
 
 
-df = pd.read_csv(r'vehicles_us.csv')
+df = pd.read_csv(r'C:\Users\tomin\Documents\Practicum Projects\Sprint 4\Car-Dashboard\vehicles_us.csv')
 df.head()
 
 
@@ -25,12 +25,13 @@ df.head()
 df.info()
 
 
-# There are some columns with missing values such as model_year, cylinders, odometer, paint_color, and is_4wd. The model_year is important, since only 7% of the data for this column is missing, I've decided to drop it. The reasoning is that filling in values for a car that might be from the early 1900's is very different from a car in the 2000's. 
+# There are some columns with missing values such as model_year, cylinders, odometer, paint_color, and is_4wd. 
 
 # In[4]:
 
 
-df = df.dropna(subset=['model_year'])
+#filling in missing values in model_year with median based on car model 
+df['model_year'] = df['model_year'].fillna(df.groupby(['model'])['model_year'].transform('median'))
 
 
 # In[5]:
@@ -40,57 +41,42 @@ df = df.dropna(subset=['model_year'])
 df.is_4wd.fillna(0, inplace=True)
 
 
-# Upon research, most cars today at 4 cylinders, however, the median of cars in this list is 6, I will fill the missing values as 6 cylinder cars. 
-
 # In[6]:
 
 
-df.cylinders.median()
+#filling in missing values in cylinders based on car model 
+df['cylinders'] = df['cylinders'].fillna(df.groupby(['model'])['cylinders'].transform('median'))
 
 
 # In[7]:
 
 
-df.cylinders.fillna(6, inplace=True)
+#filing in missing values in odometer based on model and model_year
+df['odometer'] = df['odometer'].fillna(df.groupby(['model','model_year'])['odometer'].transform('median'))
 
-
-# We will also fill the missing odometer values with the median here as well
 
 # In[8]:
 
 
-df.odometer.median()
+#filling in the missing values with unknown for paint_color 
+df.paint_color.fillna('unknown', inplace=True)
 
 
 # In[9]:
-
-
-df.odometer.fillna(113000, inplace=True)
-
-
-# We will also fill in the missing paint_color with an empty string
-
-# In[10]:
-
-
-df.paint_color.fillna(' ', inplace=True)
-
-
-# In[11]:
 
 
 #looking to make sure there are no missing values before proceeding 
 df.info()
 
 
-# In[12]:
+# In[10]:
 
 
 #extracting the names of the manufacterer
 split = df['model'].str.split(pat=' ', n=1, expand=True)
 
 
-# In[13]:
+# In[11]:
 
 
 #adding the manufacterer and model names into new columns, dropping the one with both 
@@ -102,7 +88,7 @@ df.head()
 
 # ## Plotly Dashboard
 
-# In[14]:
+# In[12]:
 
 
 #creating header 
@@ -118,7 +104,7 @@ if exclude_odometer:
 st.dataframe(df)
 
 
-# In[15]:
+# In[13]:
 
 
 st.header('Number of Vehicle Types by Manufacterer')
@@ -128,7 +114,7 @@ fig1 = px.histogram(df, x='manufacterer', color='type')
 st.write(fig1)
 
 
-# In[16]:
+# In[14]:
 
 
 st.header('Price Range of Vehicles Per Model Year')
@@ -138,12 +124,12 @@ fig2 = px.scatter(df, x='model_year', y='price')
 st.write(fig2)
 
 
-# In[17]:
+# In[15]:
 
 
 st.header('Overall Transmission Type of Vehicles')
 st.write("""
-##### The data below shows that the majority of cars listed are automatic transmission.
+##### The data below that the majority of cars listed are automatic transmission.
 """)
 #making a histogram
 fig3 = px.histogram(df, x='transmission')
@@ -151,13 +137,10 @@ fig3 = px.histogram(df, x='transmission')
 st.write(fig3)
 
 
-# In[18]:
+# In[16]:
 
 
 st.header('Overall Types of Cars Listed')
-st.write("""
-##### The most popular types of cars listed are trucks, SUVs, and sedans.
-""")
 #creating a scatterplot
 fig4 = px.histogram(df, x='type')
 #displaying the scatterplot
